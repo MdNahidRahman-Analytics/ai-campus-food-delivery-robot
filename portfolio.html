@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Campus Food Delivery Robot — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f2ed;
+    --accent: #e8ff47;
+    --accent2: #47ffe8;
+    --gray: #1a1a1a;
+    --mid: #2a2a2a;
+    --text-muted: #888;
+    --border: rgba(255,255,255,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 60% at 70% 50%, rgba(232,255,71,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(71,255,232,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-left {
+    padding: 80px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.75;
+    filter: saturate(0.6);
+    transition: filter 0.6s ease, opacity 0.6s ease;
+  }
+
+  .hero-right:hover img {
+    opacity: 0.9;
+    filter: saturate(1.1);
+  }
+
+  .hero-right::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, var(--black) 0%, transparent 40%);
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 6px 14px;
+    border-radius: 2px;
+    margin-bottom: 32px;
+    width: fit-content;
+  }
+
+  .hero-title {
+    font-size: clamp(42px, 5.5vw, 76px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+  }
+
+  .hero-title em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero-subtitle {
+    font-size: 17px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 440px;
+    margin-bottom: 48px;
+    font-weight: 400;
+  }
+
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+
+  .badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 5px 12px;
+    border-radius: 2px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  .badge.hi { border-color: rgba(232,255,71,0.3); color: var(--accent); }
+  .badge.hi2 { border-color: rgba(71,255,232,0.3); color: var(--accent2); }
+
+  .team-line {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .team-line strong { color: var(--white); }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 100px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 48px;
+    line-height: 1.1;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ── SENSOR CARDS ── */
+  .sensor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .sensor-card {
+    background: var(--gray);
+    padding: 40px 36px;
+    transition: background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sensor-card:hover { background: var(--mid); }
+
+  .sensor-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: left;
+  }
+
+  .sensor-card:hover::before { transform: scaleX(1); }
+
+  .sensor-icon {
+    font-size: 36px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .sensor-card h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+
+  .sensor-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: var(--gray);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 32px 36px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    color: #ccc;
+    overflow-x: auto;
+    margin: 32px 0;
+  }
+
+  .code-block .kw { color: var(--accent); }
+  .code-block .cm { color: #555; }
+  .code-block .val { color: var(--accent2); }
+
+  /* ── ARCHITECTURE FLOW ── */
+  .arch-flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    gap: 0;
+    align-items: center;
+    margin: 48px 0;
+  }
+
+  .arch-node {
+    background: var(--gray);
+    border: 1px solid var(--border);
+    padding: 28px 20px;
+    text-align: center;
+    position: relative;
+  }
+
+  .arch-node .node-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .arch-node h4 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
+  .arch-node ul {
+    list-style: none;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+
+  .arch-arrow {
+    font-size: 22px;
+    color: var(--accent);
+    text-align: center;
+    padding: 0 8px;
+  }
+
+  /* ── BUSINESS TABLE ── */
+  .biz-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+
+  .biz-table th {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .biz-table td {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    color: var(--white);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  .biz-table td:first-child {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .biz-table tr:hover td { background: var(--gray); }
+
+  /* ── PHOTO GRID ── */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 4px;
+    height: 600px;
+  }
+
+  .photo-grid .photo {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .photo-grid .photo:first-child {
+    grid-row: span 2;
+  }
+
+  .photo-grid .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.7);
+    transition: filter 0.4s ease, transform 0.4s ease;
+  }
+
+  .photo-grid .photo:hover img {
+    filter: saturate(1.1);
+    transform: scale(1.03);
+  }
+
+  .photo-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 16px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .photo-grid .photo:hover .photo-caption { opacity: 1; }
+
+  /* ── STAT ROW ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  .stat {
+    background: var(--gray);
+    padding: 40px 30px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .stat-desc {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ── ETHICS GRID ── */
+  .ethics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 24px;
+  }
+
+  .ethics-card {
+    background: var(--gray);
+    padding: 36px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+
+  .ethics-card h3 {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ethics-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+
+  /* ── TECH STACK ── */
+  .tech-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .tech-pill {
+    background: var(--gray);
+    border: 1px solid var(--border);
+    padding: 10px 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    transition: border-color 0.3s, color 0.3s;
+  }
+
+  .tech-pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── TEAM ── */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 24px;
+  }
+
+  .team-card {
+    background: var(--gray);
+    padding: 40px 36px;
+  }
+
+  .team-initial {
+    width: 56px; height: 56px;
+    background: var(--accent);
+    color: var(--black);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .team-card h3 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+  .team-card p { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  footer .footer-left {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  footer .footer-right {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { height: 300px; }
+    section { padding: 60px 24px; }
+    .arch-flow { grid-template-columns: 1fr; gap: 8px; }
+    .arch-arrow { transform: rotate(90deg); }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    .team-grid { grid-template-columns: 1fr; }
+    .ethics-grid { grid-template-columns: 1fr; }
+    .photo-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; height: auto; }
+    .photo-grid .photo:first-child { grid-row: span 1; }
+    .photo-grid .photo { height: 220px; }
+    footer { flex-direction: column; gap: 16px; padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="tag">📍 Neil Griffin College of Business · Summer 2024</div>
+    <h1 class="hero-title">
+      AI-Powered<br><em>Campus</em><br>Food Delivery
+    </h1>
+    <p class="hero-subtitle">
+      An autonomous 4WD robotic platform combining Convolutional Neural Networks, 
+      Reinforcement Learning, and multi-sensor fusion for last-mile campus food delivery.
+    </p>
+    <div class="badge-row">
+      <span class="badge hi">Python</span>
+      <span class="badge hi">Raspberry Pi 4</span>
+      <span class="badge hi2">OpenCV</span>
+      <span class="badge hi2">CNN · RNN · RL</span>
+      <span class="badge">ROS 2</span>
+      <span class="badge">Linux</span>
+      <span class="badge">FreeNove 4WD</span>
+    </div>
+    <div class="team-line">
+      Team: <strong>Md Nahid Rahman</strong> · <strong>Rohil Bhattarai</strong> · <strong>Gabriel Wood</strong>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="nahid_3.jpeg" alt="AI Campus Food Delivery Robot">
+  </div>
+</div>
+
+<!-- STATS -->
+<section style="padding-top: 60px; padding-bottom: 0;">
+  <div class="stat-row">
+    <div class="stat">
+      <span class="stat-num">4</span>
+      <span class="stat-desc">Sensor Systems</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">3</span>
+      <span class="stat-desc">AI Models (CNN · RNN · RL)</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">30<small style="font-size:0.5em">cm</small></span>
+      <span class="stat-desc">Obstacle Detection Range</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">360°</span>
+      <span class="stat-desc">Mecanum Omni-Movement</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider" style="margin-top: 60px;"></div>
+
+<!-- OVERVIEW -->
+<section>
+  <div class="section-label">// 01 — Overview</div>
+  <h2>What We Built</h2>
+  <p style="font-size: 18px; color: var(--text-muted); line-height: 1.8; max-width: 760px; margin-bottom: 32px;">
+    We designed and built a working autonomous robot prototype intended for last-mile food delivery on structured campus environments. 
+    The system combines real hardware sensor integration on a Raspberry Pi 4 / FreeNove Mecanum-wheel platform with a full AI architecture 
+    proposal covering perception, mapping, and intelligent path planning.
+  </p>
+  <p style="font-size: 16px; color: var(--text-muted); line-height: 1.8; max-width: 760px;">
+    The robot was programmed with three live autonomous modes — ultrasonic obstacle avoidance, infrared line tracking, and light tracing — 
+    and demonstrated live with the FreeNove WiFi GUI. The broader AI pipeline (CNN + RNN + Reinforcement Learning) was designed and 
+    presented as the production deployment architecture for a real campus delivery system.
+  </p>
+</section>
+
+<div class="divider"></div>
+
+<!-- SENSOR SYSTEMS -->
+<section>
+  <div class="section-label">// 02 — Sensor Systems</div>
+  <h2>Four Autonomous Behaviors</h2>
+  <div class="sensor-grid">
+    <div class="sensor-card">
+      <span class="sensor-icon">🔊</span>
+      <h3>Ultrasonic Obstacle Avoidance</h3>
+      <p>HC-SR04 sensor on a servo motor sweeps 30°, 90°, and 150°. At each angle, distance is measured and compared to a 30 cm threshold. The robot automatically moves forward, turns, or reverses and U-turns based on which directions are blocked.</p>
+    </div>
+    <div class="sensor-card">
+      <span class="sensor-icon">🔦</span>
+      <h3>Infrared Line Tracking</h3>
+      <p>A 3-channel IR sensor array (Left / Middle / Right) is mounted below the chassis. Each sensor returns HIGH on black, LOW on white. Five-state directional logic (full left → straight → full right) keeps the robot precisely on a marked path.</p>
+    </div>
+    <div class="sensor-card">
+      <span class="sensor-icon">💡</span>
+      <h3>Light Tracing</h3>
+      <p>Dual photoresistor sensors compare left and right light voltages in real time. The robot steers toward the brighter light source, enabling it to home in on illuminated delivery targets or follow directional light signals.</p>
+    </div>
+    <div class="sensor-card">
+      <span class="sensor-icon">🎮</span>
+      <h3>Omnidirectional Motor Control</h3>
+      <p>Four independent Mecanum wheels allow forward, backward, lateral strafe, and in-place rotation — no multi-point turns needed. Each motor is controlled via setMotorModel(A,B,C,D) with values from −4096 to +4096 for full speed control.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CODE BLOCK -->
+<section style="padding-top: 0;">
+  <div class="code-block">
+<span class="cm"># Motor control — Mecanum wheel movement</span>
+<span class="kw">def</span> setMotorModel(A, B, C, D):
+    <span class="cm"># A = Left Front  |  B = Right Front</span>
+    <span class="cm"># C = Left Rear   |  D = Right Rear</span>
+    <span class="cm"># +4096 = full forward  |  -4096 = full reverse  |  0 = stop</span>
+    PWM.setMotorModel(A, B, C, D)
+
+<span class="cm"># Ultrasonic obstacle avoidance decision logic</span>
+<span class="kw">def</span> avoid_obstacle(dist_left, dist_mid, dist_right):
+    <span class="kw">if</span> dist_left > <span class="val">30</span> <span class="kw">and</span> dist_mid > <span class="val">30</span> <span class="kw">and</span> dist_right > <span class="val">30</span>:
+        setMotorModel(<span class="val">2000</span>, <span class="val">2000</span>, <span class="val">2000</span>, <span class="val">2000</span>)   <span class="cm"># Forward</span>
+    <span class="kw">elif</span> dist_left < <span class="val">30</span> <span class="kw">and</span> dist_mid < <span class="val">30</span> <span class="kw">and</span> dist_right > <span class="val">30</span>:
+        setMotorModel(<span class="val">2000</span>, <span class="val">-2000</span>, <span class="val">2000</span>, <span class="val">-2000</span>)  <span class="cm"># Turn Right</span>
+    <span class="kw">elif</span> dist_left > <span class="val">30</span> <span class="kw">and</span> dist_mid < <span class="val">30</span> <span class="kw">and</span> dist_right < <span class="val">30</span>:
+        setMotorModel(<span class="val">-2000</span>, <span class="val">2000</span>, <span class="val">-2000</span>, <span class="val">2000</span>) <span class="cm"># Turn Left</span>
+    <span class="kw">else</span>:
+        setMotorModel(<span class="val">-1500</span>, <span class="val">-1500</span>, <span class="val">-1500</span>, <span class="val">-1500</span>) <span class="cm"># Reverse</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- AI ARCHITECTURE -->
+<section>
+  <div class="section-label">// 03 — AI Architecture</div>
+  <h2>Neural Network Pipeline</h2>
+  <div class="arch-flow">
+    <div class="arch-node">
+      <div class="node-label">Inputs</div>
+      <h4>Sensors</h4>
+      <ul>
+        <li>Camera</li>
+        <li>Ultrasonic</li>
+        <li>Infrared</li>
+        <li>GPS</li>
+      </ul>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-node">
+      <div class="node-label">CNN</div>
+      <h4>Perception</h4>
+      <ul>
+        <li>Object detect</li>
+        <li>Segmentation</li>
+        <li>Tracking</li>
+      </ul>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-node">
+      <div class="node-label">RNN</div>
+      <h4>Mapping</h4>
+      <ul>
+        <li>Sensor fusion</li>
+        <li>Map building</li>
+        <li>GPS integrate</li>
+      </ul>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-node">
+      <div class="node-label">RL Agent</div>
+      <h4>Decisions</h4>
+      <ul>
+        <li>Path planning</li>
+        <li>Behavior pred.</li>
+        <li>Route optimize</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size: 15px; color: var(--text-muted); line-height: 1.8; max-width: 680px;">
+    The CNN handles visual understanding of the environment — identifying pedestrians, segmenting navigable surfaces, and tracking moving objects. 
+    The RNN fuses all sensor data to build and maintain a real-time campus map. 
+    The Reinforcement Learning agent uses this map to select safe, efficient delivery routes and predict pedestrian behavior dynamically.
+  </p>
+</section>
+
+<div class="divider"></div>
+
+<!-- GALLERY -->
+<section>
+  <div class="section-label">// 04 — Build Gallery</div>
+  <h2>The Robot</h2>
+  <div class="photo-grid">
+    <div class="photo">
+      <img src="nahid_4.jpeg" alt="Robot full view with Raspberry Pi">
+      <div class="photo-caption">Raspberry Pi 4 + Mecanum Chassis</div>
+    </div>
+    <div class="photo">
+      <img src="nahid_1.jpeg" alt="Ultrasonic sensor close-up">
+      <div class="photo-caption">HC-SR04 Ultrasonic + Camera Mount</div>
+    </div>
+    <div class="photo">
+      <img src="nahid_2.jpeg" alt="IR tracking sensor">
+      <div class="photo-caption">Infrared Tracking Sensor Array</div>
+    </div>
+    <div class="photo">
+      <img src="nahid_3.jpeg" alt="Live demo with GUI">
+      <div class="photo-caption">Live GUI Operational Demo</div>
+    </div>
+    <div class="photo">
+      <img src="nahid_5.jpeg" alt="Robot on carpet tracking line">
+      <div class="photo-caption">Line Tracking on Campus Floor</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- BUSINESS -->
+<section>
+  <div class="section-label">// 05 — Business Model</div>
+  <h2>Competitive Advantages</h2>
+  <table class="biz-table">
+    <tr>
+      <th>Advantage</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>Compact & Maneuverable</td>
+      <td>Mecanum wheels provide full omnidirectional movement — navigates narrow sidewalks, courtyards, and corridors without multi-point turns.</td>
+    </tr>
+    <tr>
+      <td>Fully Autonomous</td>
+      <td>CNN + RNN + Reinforcement Learning handles all navigation decisions. No human operator required at any point in the delivery loop.</td>
+    </tr>
+    <tr>
+      <td>Low Operating Cost</td>
+      <td>Electric, lightweight, no labor scaling. Cost per delivery decreases as fleet grows — unlike human courier models.</td>
+    </tr>
+    <tr>
+      <td>Safe & Contactless</td>
+      <td>Smart obstacle avoidance + sealed compartment = hygienic, accident-resistant delivery. Ideal for medical campuses and crowded student areas.</td>
+    </tr>
+    <tr>
+      <td>Scalable by Design</td>
+      <td>API-ready for integration with existing campus food ordering apps. Adding more robots requires zero additional staffing or infrastructure.</td>
+    </tr>
+  </table>
+</section>
+
+<div class="divider"></div>
+
+<!-- ETHICS -->
+<section>
+  <div class="section-label">// 06 — Legal & Ethics</div>
+  <h2>Responsible Deployment</h2>
+  <div class="ethics-grid">
+    <div class="ethics-card">
+      <h3>⚖️ Liability</h3>
+      <p>Clear legal frameworks must define responsibility for collision and property damage scenarios before deployment on any campus. Insurance and liability frameworks must be established with campus administrators.</p>
+    </div>
+    <div class="ethics-card">
+      <h3>🍽️ Food Safety</h3>
+      <p>Robots must comply with temperature control standards, contamination prevention regulations, and local health department certification requirements for food transport.</p>
+    </div>
+    <div class="ethics-card">
+      <h3>♿ ADA Compliance</h3>
+      <p>Robots must never obstruct accessible ramps, entrances, or emergency exits. Navigation systems must be explicitly programmed to respect ADA-required clearance zones at all times.</p>
+    </div>
+    <div class="ethics-card">
+      <h3>🔒 Privacy by Design</h3>
+      <p>All sensor and camera data is used solely for navigation. No facial recognition, no behavioral profiling, no data retained beyond the scope of a single delivery mission.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TECH STACK -->
+<section>
+  <div class="section-label">// 07 — Tech Stack</div>
+  <h2>Technologies Used</h2>
+  <div class="tech-pills">
+    <span class="tech-pill">Python 3</span>
+    <span class="tech-pill">Raspberry Pi 4</span>
+    <span class="tech-pill">Raspberry Pi OS (Linux)</span>
+    <span class="tech-pill">OpenCV</span>
+    <span class="tech-pill">ROS 2</span>
+    <span class="tech-pill">Docker</span>
+    <span class="tech-pill">FreeNove SDK</span>
+    <span class="tech-pill">HC-SR04 Ultrasonic</span>
+    <span class="tech-pill">Infrared Sensor Array</span>
+    <span class="tech-pill">Pi Camera Module</span>
+    <span class="tech-pill">CNN</span>
+    <span class="tech-pill">RNN</span>
+    <span class="tech-pill">Reinforcement Learning</span>
+    <span class="tech-pill">Mecanum Wheels</span>
+    <span class="tech-pill">WiFi / TCP-IP</span>
+    <span class="tech-pill">PWM Motor Control</span>
+    <span class="tech-pill">Servo Motor</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TEAM -->
+<section>
+  <div class="section-label">// 08 — Team</div>
+  <h2>Meet the Team</h2>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-initial">MN</div>
+      <h3>Md Nahid Rahman</h3>
+      <p>AI/ML implementation, hardware integration, sensor programming, motor control systems, and embedded software development.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-initial" style="background: var(--accent2); color: var(--black);">RB</div>
+      <h3>Rohil Bhattarai</h3>
+      <p>Business model design, competitive analysis, system architecture planning, and market opportunity assessment.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-initial" style="background: var(--white); color: var(--black);">GW</div>
+      <h3>Gabriel Wood</h3>
+      <p>Research, legal and ethical framework, learning resources curation, and presentation structure.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<footer>
+  <div class="footer-left">
+    AI-Powered Campus Food Delivery Robot<br>
+    Neil Griffin College of Business · Summer 2024
+  </div>
+  <div class="footer-right">
+    Nahid Rahman · Rohil Bhattarai · Gabriel Wood
+  </div>
+</footer>
+
+</body>
+</html>
