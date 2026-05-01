@@ -12,7 +12,7 @@
 **An autonomous 4WD robotic platform engineered for last-mile food delivery on college, medical, and corporate campuses.**  
 *Combining Convolutional Neural Networks, Reinforcement Learning, and multi-sensor fusion for fully autonomous navigation.*
 
-[📄 View Presentation](#) · [🎥 Watch Demo](#) · [📬 Contact Team](#contact)
+[📄 View Presentation](Campus_Food_Delivery_Presentation.pdf) ·  [📬 Contact Team](#contact)
 
 </div>
 
